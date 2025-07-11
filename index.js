@@ -1,16 +1,15 @@
-// index.js
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 
-// Rotas
+// Importação das rotas
 import orderRoutes from "./routes/orderRoutes.js";
 import affiliateRoutes from "./routes/affiliateRoutes.js";
 import withdrawRoutes from "./routes/withdrawRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 
-// Middleware de erros
+// Middleware de erro
 import errorHandler from "./middlewares/errorHandler.js";
 
 // Configura variáveis de ambiente
@@ -51,3 +50,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🔥 Servidor rodando na porta ${PORT}`);
 });
+
+
