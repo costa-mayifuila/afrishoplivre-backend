@@ -8,10 +8,15 @@ export const createOrder = async (req, res) => {
   try {
     const { items, totalAmount, paymentMethod, reference, ref } = req.body;
 
+    // Validação de parâmetros obrigatórios
     if (!items || items.length === 0) {
       return res.status(400).json({ message: "O pedido deve conter ao menos um item." });
     }
+    if (!totalAmount || !paymentMethod || !reference) {
+      return res.status(400).json({ message: "O valor total, método de pagamento e referência são obrigatórios." });
+    }
 
+    // Processar itens do pedido
     const processedItems = await Promise.all(
       items.map(async (item) => {
         const product = await Product.findById(item.product);
@@ -49,7 +54,11 @@ export const createOrder = async (req, res) => {
         // if (affiliate.user?.fcmToken) {
         //   const title = "🎉 Nova Venda Afiliada!";
         //   const body = `Você ganhou ${commission.toFixed(2)} AOA de comissão!`;
-        //   await sendPushNotification(affiliate.user.fcmToken, title, body);
+        //   try {
+        //     await sendPushNotification(affiliate.user.fcmToken, title, body);
+        //   } catch (pushError) {
+        //     console.error("Erro ao enviar notificação push:", pushError);
+        //   }
         // }
       }
     }
@@ -57,7 +66,7 @@ export const createOrder = async (req, res) => {
     res.status(201).json(savedOrder);
   } catch (error) {
     console.error("Erro ao criar pedido:", error);
-    res.status(500).json({ message: "Erro ao criar pedido", error });
+    res.status(500).json({ message: "Erro ao criar pedido", error: error.message });
   }
 };
 
@@ -68,7 +77,7 @@ export const getUserOrders = async (req, res) => {
     res.json(orders);
   } catch (error) {
     console.error("Erro ao buscar pedidos:", error);
-    res.status(500).json({ message: "Erro ao buscar pedidos", error });
+    res.status(500).json({ message: "Erro ao buscar pedidos", error: error.message });
   }
 };
 
@@ -87,6 +96,6 @@ export const updateOrderStatus = async (req, res) => {
     res.json(updatedOrder);
   } catch (error) {
     console.error("Erro ao atualizar pedido:", error);
-    res.status(500).json({ message: "Erro ao atualizar pedido", error });
+    res.status(500).json({ message: "Erro ao atualizar pedido", error: error.message });
   }
 };
