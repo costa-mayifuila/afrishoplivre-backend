@@ -1,5 +1,5 @@
 import Affiliate from '../models/affiliate.js';
-import Order from '../models/order.js'; // Mesmo que não esteja sendo usado agora, mantive se for necessário depois
+import Order from '../models/Order.js'; // Mesmo que não esteja sendo usado agora, mantive se for necessário depois
 import Product from '../models/Product.js';
 
 // 📌 Criar Link de Afiliado
