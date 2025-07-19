@@ -10,7 +10,7 @@ const productSchema = new mongoose.Schema(
     },
     name: {
       type: String,
-      required: [true, 'O nome do produto é obrigatório.'],
+      required: [true, 'O nome do produto é obrigatório.'], 
     },
     description: {
       type: String,
