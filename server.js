@@ -19,7 +19,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import businessAccountRoutes from "./routes/businessAccountRoutes.js";
 import reviewRoutes from "./routes/reviewRoutes.js";
 import reciboRoutes from "./routes/reciboRoutes.js";
-import publicoRoutes from "./routes/publicoRoutes.js"; // ✅ Adicionado
+import publicoRoutes from "./routes/publicoRoutes.js"; // ✅ Acesso público
 
 // 📁 Diretório atual
 const __filename = fileURLToPath(import.meta.url);
@@ -31,9 +31,19 @@ connectDB();
 
 const app = express();
 
-// 🔐 Configurar CORS para frontend
+// ✅ CORS corrigido para múltiplas origens (localhost + Vercel)
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://afrishoplivre-frontend.vercel.app"
+];
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
   credentials: true
 }));
 
@@ -53,7 +63,7 @@ app.use("/api/orders", orderRoutes);
 app.use("/api/business-account", businessAccountRoutes);
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/recibos", reciboRoutes);
-app.use("/api/publico", publicoRoutes); // ✅ Nova rota para acesso público de produtos
+app.use("/api/publico", publicoRoutes);
 
 // 📁 Servir arquivos estáticos
 app.use("/uploads", express.static(path.resolve(__dirname, "public/uploads")));
